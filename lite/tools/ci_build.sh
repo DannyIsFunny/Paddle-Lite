@@ -47,7 +47,7 @@ function prepare_adb_devices {
        device_armv8=emulator-$port_armv8
        device_armv7=emulator-$port_armv7
     else
-       adb_devices_num=($(adb devices |grep -v devices |grep device | awk -F " " '{print $1}'))
+       adb_devices=($(adb devices |grep -v devices |grep device | awk -F " " '{print $1}'))
        # adbindex is the env variable registered in ci agent to tell which mobile is to used as adb
        adbindex_pos=`expr ${adbindex} + 1`
        if [ ${adbindex_pos} -gt ${#adb_devices[@]} ]; then
