@@ -50,7 +50,7 @@ function prepare_adb_devices {
        adb_devices_num=($(adb devices |grep -v devices |grep device | awk -F " " '{print $1}'))
        # adbindex is the env variable registered in ci agent to tell which mobile is to used as adb
        adbindex_pos=`expr ${adbindex} + 1`
-       if [ ${adbindex_pos} -gt ${adb_devices_num} ]; then
+       if [ ${adbindex_pos} -gt ${#adb_devices[@]} ]; then
            echo -e "Error: the adb devices on ci agent are not enough, at least ${adbindex_pos} adb devices are needed."
            exit 1
        fi
