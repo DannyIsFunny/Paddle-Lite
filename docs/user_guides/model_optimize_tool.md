@@ -1,7 +1,7 @@
 
 # 模型转化方法
 
-Paddle-Lite 提供了多种策略来自动优化原始的训练模型，其中包括量化、子图融合、混合调度、Kernel优选等等方法。为了使优化过程更加方便易用，我们提供了**opt** 工具来自动完成优化步骤，输出一个轻量的、最优的可执行模型。
+Paddle-Lite 提供**opt** 工具来自动优化PaddlePaddle的训练模型，输出一个轻量、最优的可执行模型。优化过程包含量化、子图融合、混合调度、Kernel优选等方法
 
 具体使用方法介绍如下：
 
@@ -10,7 +10,7 @@ Paddle-Lite 提供了多种策略来自动优化原始的训练模型，其中�
 ## 准备opt
 当前获得opt方法有三种：
 
-1. **推荐！** 可以进入Paddle-Lite Github仓库的[release界面](https://github.com/PaddlePaddle/Paddle-Lite/releases)，选择release版本下载对应的转化工具`opt`    
+1. **推荐！** 进入Paddle-Lite Github仓库的[release界面](https://github.com/PaddlePaddle/Paddle-Lite/releases)，根据release版本下载对应的转化工具`opt`    
    (release/v2.2.0之前的转化工具为model_optimize_tool、release/v2.3.0之后为opt)
 
 2. 我们提供`release/v2.3`编译结果下载：[opt](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.3.0/opt)、[opt_mac](https://github.com/PaddlePaddle/Paddle-Lite/releases/download/v2.3.0/opt_mac)
@@ -29,24 +29,13 @@ git checkout <release-version-tag>
 
 ## 使用opt
 
-opt是 x86 平台上的可执行文件，需要在PC端运行：支持Linux终端和Mac终端。
+opt是 x86 平台上的可执行文件，支持在Linux终端和Mac终端执行
 
-### 帮助信息
- 执行opt时不加入任何输入选项，会输出帮助信息，提示当前支持的选项：
-```bash
- ./opt
-```
-![](https://paddlelite-data.bj.bcebos.com/doc_images/1.png)
+### 使用opt转化Paddle原生模型
 
-### 功能一：转化模型为Paddle-Lite格式
-opt可以将PaddlePaddle的部署模型格式转化为Paddle-Lite 支持的模型格式，期间执行的操作包括：
+opt可以将PaddlePaddle的部署模型转化为Paddle-Lite 支持的格式。优化过程如下：
 
-- 将protobuf格式的模型文件转化为naive_buffer格式的模型文件，有效降低模型体积
-- 执行“量化、子图融合、混合调度、Kernel优选”等图优化操作，提升其在Paddle-Lite上的运行速度、内存占用等效果
-
-模型优化过程：
-
-（1）准备待优化的PaddlePaddle模型
+（1）准备PaddlePaddle模型
 
 PaddlePaddle模型有两种保存格式：
    Combined Param：所有参数信息保存在单个文件`params`中，模型的拓扑信息保存在`__model__`文件中。
@@ -68,6 +57,20 @@ PaddlePaddle模型有两种保存格式：
 以上命令可以将`mobilenet_v1`模型转化为arm硬件平台、naive_buffer格式的Paddle_Lite支持模型，优化后的模型文件为`mobilenet_v1_opt.nb`，转化结果如下图所示：
 
 ![opt_resulted_model](https://paddlelite-data.bj.bcebos.com/doc_images/2.png)
+
+期间执行的操作包括：
+
+- 将protobuf格式的模型转化为naive_buffer格式的模型文件，有效降低模型体积
+- 执行“量化、子图融合、混合调度、Kernel优选”等图优化操作，提升在Paddle-Lite上的运行速度，降低内存占用
+
+### 帮助信息
+ 执行opt时不加入任何输入选项，会输出帮助信息，提示当前支持的选项：
+```bash
+ ./opt
+```
+![](https://paddlelite-data.bj.bcebos.com/doc_images/1.png)
+
+
 
 
 (3) **更详尽的转化命令**总结：
